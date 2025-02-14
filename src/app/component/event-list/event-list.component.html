@@ -1,0 +1,63 @@
+<div class="event-list-container">
+    <h2>Event List</h2>
+
+    <div class="filter-container">
+      <label for="classification">Filter by Classification</label>
+      <select id="classification" class="form-control" (change)="onFilterChange($event)">
+        <option value="all">All</option>
+        <option value="log">Log</option>
+        <option value="warn">Warning</option>
+        <option value="error">Error</option>
+      </select>
+    </div>
+
+    <div class="event-table">
+      <table>
+
+        <thead>
+          <tr>
+            <th>Employee</th>
+            <th>Title</th>
+            <th>Client</th>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Classification</th>
+            <th>Creation Date</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let event of events">
+            <td>{{ event.employee.name }}</td>
+            <td>{{ event.title }}</td>
+            <td>{{ event.client }}</td>
+            <td>{{ event.date | date }}</td>
+            <td>{{ event.description }}</td>
+            <td [ngClass]="{
+              'log-class': event.classification === 'log', 
+              'warn-class': event.classification === 'warn', 
+              'error-class': event.classification === 'error'
+            }">{{ event.classification }}</td>
+            <td>{{ event.creationDate | date }}</td>
+          </tr>
+        </tbody>
+        
+      </table>
+    </div>
+
+    <div class="event-summary">
+      <p>Total Events: {{ events.length }}</p>
+      <p>Log Events: {{ getEventCount('log') }}</p>
+      <p>Warning Events: {{ getEventCount('warn') }}</p>
+      <p>Error Events: {{ getEventCount('error') }}</p>
+    </div>
+</div>
+
+<!--
+(change) -> se usa pra escuchar cambios en el elemento
+cada vez que se ejecuta el método onFilterChange() con el evento de cambio como argumento
+$event -> contiene detalles sobre el cambio, como el valor seleccionado por el usuario
+
+[ngClass] -> se usa para añadir clases
+
+-->

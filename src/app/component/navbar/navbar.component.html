@@ -1,0 +1,40 @@
+<nav class="navbar">
+  <div class="navbar-container">
+    <span class="navbar-title">Event</span>
+    <div class="nav-links">
+      <a [routerLink]="['/form']" routerLinkActive="active" class="nav-link">Form</a>
+
+      <a [routerLink]="['/list']" routerLinkActive="active" class="nav-link">Event List</a>
+
+      <div class="employee-selector">
+        <span>Selected Employee: {{ selectedEmployeeName }}</span>
+        
+        <label for="employee-select" class="employee-label"></label>
+        <select id="employee-select" [formControl]="employeeControl" class="employee-select">
+          <option *ngFor="let employee of employees" [value]="employee.id">{{ employee.name }}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</nav>
+
+
+<!--
+[routerLink] -> permite navegar entre páginas sin regarcar la web
+"['/form']" -> la ruta a la que va ir el usuario al hacer clic
+
+[formControl]= "employeeControl" está conectado a un campo del formulario con la varibale employeeControl, que es un FormControl
+
+*ngFor = recorre una lista y genera elementos HTML para cada uno
+recorre la lista employee y crea un <option> por cada empleado y despues se muestra el nombre del empleado.
+
+  [value]="employee.id" = asigan el valor de cada option
+
+-->
+
+<!--
+-> LocalStorage o cookies
+-> fetch o http.get
+-> formulario 
+-> Alegandro1203
+-->
