@@ -48,4 +48,12 @@ export class EventService {
     return this.events;
   }
 
+  //Eliminamos un evento de la lista y lo guardamos en localStorage
+  deleteEvent(event: EventM) {
+    this.events = this.events.filter(e => e !== event);
+    this.saveEvents();
+  }
+
+  
+
 }

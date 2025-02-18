@@ -1,0 +1,31 @@
+ng new (Nombre-app) -> crear un proyecto
+npm install
+npm install -g @angular/cli
+npm install ngx-bootstrap --sabe
+
+"styles": [
+              "src/styles.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "./node_modules/ngx-bootstrap/datepicker/bs-datepicker.css"
+            ],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/@popperjs/core/dist/umd/popper.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.min.js"
+            ],
+
+npm install -g json-server 
+npm install concurrently --save-dev --forcé
+
+"inicio":"concurrently \"json-server db.json\" \"ng serve\"",
+
+npm run inicio
+----------------------------------------
+app
+-components
+-models
+-services
+----------------------------------------
+netstat -ano | findstr :3000
+taskkill /PID 1234 /F
+----------------------------------------

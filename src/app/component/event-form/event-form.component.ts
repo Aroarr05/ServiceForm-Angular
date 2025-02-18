@@ -126,4 +126,6 @@ export class EventFormComponent implements OnInit {
 
     return selectedDate >= lastMonth && selectedDate <= today ? null : { invalidDate: true };
   }
+
+  
 }

@@ -47,4 +47,13 @@ export class EventListComponent implements OnInit {
   getEventCount(classification: string): number {
     return this.events.filter(event => event.classification === classification).length;
   }
+
+  //Método que se ejecuta cuando se elimina un evento
+  onDeleteEvent(event: EventM){
+    this.eventService.deleteEvent(event); //llama al método del servicio para eliminar el evento
+    this.events = this.eventService.getEvents(); //actualiza la lista de eventos
+  }
+
+ 
+
 }
