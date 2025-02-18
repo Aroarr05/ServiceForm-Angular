@@ -23,7 +23,7 @@
             <th>Description</th>
             <th>Classification</th>
             <th>Creation Date</th> 
-            <th>Actions</th>     
+           <!--<th>Actions</th>--> 
           </tr>
         </thead>
 
@@ -40,10 +40,10 @@
               'error-class': event.classification === 'error'
             }">{{ event.classification }}</td>
             <td>{{ event.creationDate | date }}</td>
-            <td>
+           <!-- <td>
               <button (click)="onEditEvent(event)">Edit</button>
               <button (click)="onDeleteEvent(event)">Delete</button>
-          </tr>
+          </td>--> 
         </tbody>
         
       </table>

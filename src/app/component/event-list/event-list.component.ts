@@ -3,6 +3,7 @@ import { EventService } from '../../services/event.service';
 import { EventM } from '../../model/event.model';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-event-list',
@@ -22,14 +23,14 @@ export class EventListComponent implements OnInit {
   });
 
   //Añadimos el servicio EventService
-  constructor(private eventService: EventService) { }
+  constructor(private eventService: EventService, private router: Router) { }
 
-
+  
   ngOnInit() {
     this.eventService.loadEvents(); // cargamos los eventos del servicio
     this.events = this.eventService.getEvents(); // inicializa la lista de eventos con los eventos obtenidos del servicio
   }
-
+  
   // este metodo se ejecuta cuando se cambia el filtro de clasificación
   onFilterChange(event: Event){
     const selectedClassification = (event.target as HTMLSelectElement).value; //obtiene la clasificación seleccionada
@@ -47,13 +48,17 @@ export class EventListComponent implements OnInit {
   getEventCount(classification: string): number {
     return this.events.filter(event => event.classification === classification).length;
   }
-
-  //Método que se ejecuta cuando se elimina un evento
+  
+  /*//Método que se ejecuta cuando se elimina un evento
   onDeleteEvent(event: EventM){
     this.eventService.deleteEvent(event); //llama al método del servicio para eliminar el evento
     this.events = this.eventService.getEvents(); //actualiza la lista de eventos
-  }
+  }*/
 
- 
+  /*
+  onEditEvent(event: EventM) {
+    this.eventService.setEventToEdit(event); // Guarda el evento a editar
+    this.router.navigate(['/edit-form']); // Navega al formulario
+  }*/
 
 }

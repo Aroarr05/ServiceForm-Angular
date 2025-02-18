@@ -87,6 +87,47 @@ export class EventFormComponent implements OnInit {
     });
   }
 
+  /*// Se ejecuta cuando el formulario es válido
+  onSubmit() {
+    if (this.eventForm.valid) {
+      const selectedEmployee = this.employees.find(emp => emp.id === this.eventForm.value.employee);
+      if (!selectedEmployee) {
+        console.error('No hay empleado seleccionado');
+        return;
+      }
+
+      const existingEvent = this.eventService.getEventToEdit();
+      if (existingEvent) {
+        // Si es edición, actualizar el evento existente
+        existingEvent.title = this.eventForm.value.title;
+        existingEvent.client = this.eventForm.value.client;
+        existingEvent.date = this.eventForm.value.date;
+        existingEvent.description = this.eventForm.value.description;
+        existingEvent.classification = this.eventForm.value.classification;
+        existingEvent.employee = selectedEmployee;
+
+        this.eventService.saveEvents(); // Guardar cambios en localStorage o base de datos
+      } else {
+        // Si no es edición, crear un nuevo evento
+        const newEvent: EventM = {
+          id: new Date().getTime(),
+          employee: selectedEmployee,
+          title: this.eventForm.value.title,
+          client: this.eventForm.value.client,
+          date: this.eventForm.value.date,
+          description: this.eventForm.value.description,
+          classification: this.eventForm.value.classification,
+          creationDate: new Date()
+        };
+
+        this.eventService.addEvent(newEvent);
+      }
+
+      this.eventService.setEventToEdit(null); // Limpiar el evento en edición
+      this.eventForm.reset();
+    }
+  }*/
+
   // se ejecuta cuando el formulario este valido 
   onSubmit() {
     if (this.eventForm.valid) {
@@ -127,5 +168,4 @@ export class EventFormComponent implements OnInit {
     return selectedDate >= lastMonth && selectedDate <= today ? null : { invalidDate: true };
   }
 
-  
 }

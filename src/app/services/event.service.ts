@@ -48,12 +48,22 @@ export class EventService {
     return this.events;
   }
 
-  //Eliminamos un evento de la lista y lo guardamos en localStorage
+  /*//Eliminamos un evento de la lista y lo guardamos en localStorage
   deleteEvent(event: EventM) {
     this.events = this.events.filter(e => e !== event);
     this.saveEvents();
-  }
+  }*/
 
+  /*
+    private eventToEdit: EventM | null = null;
   
+    setEventToEdit(event: EventM | null) {
+      this.eventToEdit = event;
+    }
+    
+  
+    getEventToEdit(): EventM | null {
+      return this.eventToEdit;
+    }*/
 
 }
