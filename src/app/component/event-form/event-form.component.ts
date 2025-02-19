@@ -70,7 +70,12 @@ export class EventFormComponent implements OnInit {
     });
   }
 
+  //quiero guardar los datos del fromulario automaticamnete el localStorage
+  
+
   ngOnInit() {
+    //no se como se usa el value Changes
+  
     //Se obtine los empleados y se almacenan en el arrya 'employees'
     //.subscribe() permite escuchar un observable y ejecutar un callback cada vez que ese observable emite un valor
     // callback-> es una funcion que se pasa como argumento a otra funcion, esta funcion se ejecutará en algún momento posterior, cuando ocurra algo específico
@@ -83,6 +88,7 @@ export class EventFormComponent implements OnInit {
       if (empleado) {
         this.empleado = empleado;
         this.eventForm.patchValue({ employee: empleado.id });
+        
       }
     });
   }
