@@ -4,7 +4,7 @@ import { EmployeeService } from '../../services/employee.service';
 import { Employee } from '../../model/employee.model';
 import { EventM } from '../../model/event.model';
 import { CommonModule } from '@angular/common';
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';// se le añade para la fecha
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { EventService } from '../../services/event.service';
 
 @Component({
@@ -15,8 +15,6 @@ import { EventService } from '../../services/event.service';
   styleUrls: ['./event-form.component.css']
 })
 export class EventFormComponent implements OnInit {
-
-  // Configuración para el datepicker (calendario) de ngx-bootstrap
   bsConfig = {
     dateInputFormat: 'DD-MM-YYYY',
     isAnimated: true,
@@ -24,42 +22,15 @@ export class EventFormComponent implements OnInit {
     adaptivePosition: true
   };
 
-  empleado: Employee | null = null; //Almacenamos el empleado
-  employees: Employee[] = []; //Almacenamos todos los empleados 
-  eventForm: FormGroup; //Formulario reactivo para el evento
+  empleado: Employee | null = null;
+  employees: Employee[] = [];
+  eventForm: FormGroup;
 
-  //Añadimos el datepicker para la fecha
-  //npm install ngx-bootstrap --save
-
-  //Intalar json 
-  //npm install -g json-server
-  //Ejecutar el json
-  //json-server --watch (employee.json) Nombre del archivo
-
-  /*PARA NO TENER QUE ABRIR DOS TERMINALES:
-    npm install -g json-server 
-    npm install concurrently --save-dev --forcé
-
-    "inicio":"concurrently \"json-server db.json\" \"ng serve\"",
-
-    npm run inicio
-  */
-
-
-  //instalar bootstrap
-  //npm install bootstrap jquery @popperjs/core
-  //añadir en el angular.json los estilos y scripts
-
-  
   constructor(
     private fb: FormBuilder,
     private employeeService: EmployeeService,
     private eventService: EventService
   ) {
-    /**Inicializar el formulario con los campos y calidadores 
-    Validators.required -> se usa en los formularios rectivos, marca un campo como obligatorio
-     */
-    
     this.eventForm = this.fb.group({
       title: ['', Validators.required],
       client: ['', Validators.required],
@@ -70,71 +41,36 @@ export class EventFormComponent implements OnInit {
     });
   }
 
-  //quiero guardar los datos del fromulario automaticamnete el localStorage
-  
-
   ngOnInit() {
-    //no se como se usa el value Changes
-  
-    //Se obtine los empleados y se almacenan en el arrya 'employees'
-    //.subscribe() permite escuchar un observable y ejecutar un callback cada vez que ese observable emite un valor
-    // callback-> es una funcion que se pasa como argumento a otra funcion, esta funcion se ejecutará en algún momento posterior, cuando ocurra algo específico
+    this.loadFormFromLocalStorage();
+
+    this.eventForm.valueChanges.subscribe(() => {
+      this.saveFormToLocalStorage();
+    });
+
     this.employeeService.getEmployees().subscribe(employees => {
       this.employees = employees;
     });
-    //Obtenemos el empleado seleccionado y actualiza el formulario si hay uno seleccionado
-    //.patchValue -> es un metodo que se usa para actualizar los valores de un formulario de manera parcial.
+
     this.employeeService.getSelectedEmployee().subscribe(empleado => {
       if (empleado) {
         this.empleado = empleado;
         this.eventForm.patchValue({ employee: empleado.id });
-        
       }
     });
   }
 
-  /*// Se ejecuta cuando el formulario es válido
-  onSubmit() {
-    if (this.eventForm.valid) {
-      const selectedEmployee = this.employees.find(emp => emp.id === this.eventForm.value.employee);
-      if (!selectedEmployee) {
-        console.error('No hay empleado seleccionado');
-        return;
-      }
+  private saveFormToLocalStorage() {
+    localStorage.setItem('eventFormData', JSON.stringify(this.eventForm.value));
+  }
 
-      const existingEvent = this.eventService.getEventToEdit();
-      if (existingEvent) {
-        // Si es edición, actualizar el evento existente
-        existingEvent.title = this.eventForm.value.title;
-        existingEvent.client = this.eventForm.value.client;
-        existingEvent.date = this.eventForm.value.date;
-        existingEvent.description = this.eventForm.value.description;
-        existingEvent.classification = this.eventForm.value.classification;
-        existingEvent.employee = selectedEmployee;
-
-        this.eventService.saveEvents(); // Guardar cambios en localStorage o base de datos
-      } else {
-        // Si no es edición, crear un nuevo evento
-        const newEvent: EventM = {
-          id: new Date().getTime(),
-          employee: selectedEmployee,
-          title: this.eventForm.value.title,
-          client: this.eventForm.value.client,
-          date: this.eventForm.value.date,
-          description: this.eventForm.value.description,
-          classification: this.eventForm.value.classification,
-          creationDate: new Date()
-        };
-
-        this.eventService.addEvent(newEvent);
-      }
-
-      this.eventService.setEventToEdit(null); // Limpiar el evento en edición
-      this.eventForm.reset();
+  private loadFormFromLocalStorage() {
+    const savedForm = localStorage.getItem('eventFormData');
+    if (savedForm) {
+      this.eventForm.patchValue(JSON.parse(savedForm));
     }
-  }*/
+  }
 
-  // se ejecuta cuando el formulario este valido 
   onSubmit() {
     if (this.eventForm.valid) {
       const selectedEmployee = this.employees.find(emp => emp.id === this.eventForm.value.employee);
@@ -143,7 +79,6 @@ export class EventFormComponent implements OnInit {
         return;
       }
 
-      //Creo un objeto event con los valores del formuario
       const event: EventM = {
         id: new Date().getTime(),
         employee: selectedEmployee,
@@ -156,11 +91,11 @@ export class EventFormComponent implements OnInit {
       };
 
       this.eventService.addEvent(event);
+      localStorage.removeItem('eventFormData'); 
       this.eventForm.reset();
     }
   }
 
-  // Validacion
   dateValidator(control: any) {
     if (!control.value) {
       return { required: true };
@@ -173,5 +108,4 @@ export class EventFormComponent implements OnInit {
 
     return selectedDate >= lastMonth && selectedDate <= today ? null : { invalidDate: true };
   }
-
 }
